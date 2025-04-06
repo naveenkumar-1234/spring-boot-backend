@@ -9,7 +9,7 @@
         }
 
         body {
-            font-family: monospace;
+            font-family: arial;
             font-size: 14px;
             margin: 0;
             padding: 0;
@@ -36,6 +36,8 @@
             padding: 10px;
             white-space: pre-wrap;
             border-radius: 5px;
+<!--            white-space: pre-wrap; /* Wrap lines */-->
+            word-wrap: break-word;
         }
 
         .output-box {
@@ -57,7 +59,9 @@
     <pre th:text="${code}">public class HelloWorld { ... }</pre>
 
     <p><strong>OUTPUT:</strong></p>
-    <div class="output-box" th:text="${outputText}">Hello, PDF!</div>
+    <div class="output-box" th:utext="${#strings.replace(outputText, '\n', '<br/>')}">Hello, PDF!</div>
+
+
 </div>
 </body>
 </html>

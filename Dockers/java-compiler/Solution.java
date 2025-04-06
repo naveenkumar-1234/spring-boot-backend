@@ -1,5 +1,6 @@
 public class Solution {
-    public int addTwoNumbers(int a , int b){
-        return a + b;
+    public int addTwoNumbers(int a, int b) {
+        int sum = a + b;
+        return sum ;
     }
 }
