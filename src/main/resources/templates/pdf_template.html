@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        @page {
+            size: A4;
+            margin: 30mm 20mm 30mm 20mm;
+        }
+
+        body {
+            font-family: monospace;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 20px;
+            min-height: 90vh;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .program-title {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            white-space: pre-wrap;
+            border-radius: 5px;
+        }
+
+        .output-box {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <p th:text="${experimentNo}">Experiment No</p>
+        <h3 th:text="${title}">PDF Generation Title</h3>
+        <p th:text="${name}">Name</p>
+    </div>
+
+    <p class="program-title">PROGRAM </p>
+    <pre th:text="${code}">public class HelloWorld { ... }</pre>
+
+    <p><strong>OUTPUT:</strong></p>
+    <div class="output-box" th:text="${outputText}">Hello, PDF!</div>
+</div>
+</body>
+</html>
