@@ -5,25 +5,51 @@
     <style>
         @page {
             size: A4;
-            margin: 30mm 20mm 30mm 20mm;
+            margin: 20mm 15mm 25mm 15mm;
         }
 
         body {
-            font-family: arial;
+            font-family: Arial, sans-serif;
             font-size: 14px;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            padding: 20px;
+            padding: 10px;
             min-height: 90vh;
             box-sizing: border-box;
         }
 
         .header {
+            margin-bottom: 10px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .title-row {
             text-align: center;
-            margin-bottom: 20px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        .left-exp {
+            font-weight: bold;
+        }
+
+        .right-details {
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .barcode {
+            width: 100px;
+            height: 100px;
+            margin-top: 5px;
         }
 
         .program-title {
@@ -36,7 +62,6 @@
             padding: 10px;
             white-space: pre-wrap;
             border-radius: 5px;
-<!--            white-space: pre-wrap; /* Wrap lines */-->
             word-wrap: break-word;
         }
 
@@ -50,18 +75,22 @@
 <body>
 <div class="container">
     <div class="header">
-        <p th:text="${experimentNo}">Experiment No</p>
-        <h3 th:text="${title}">PDF Generation Title</h3>
-        <p th:text="${name}">Name</p>
+        <div class="header-row">
+            <p class="left-exp" th:text="'EX NO : ' + ${experimentNo}">Exp no</p>
+            <p class="title-row" th:text="${title}">Experiment tittle</p>
+            <div class="right-details">
+                <p th:text="${name}" style="font-weight: bold;" >STUDENT NAME</p>
+                <p th:text="${uniqueId}">23CSE001</p>
+                <img th:src="'data:image/png;base64,' + ${qrCodeBase64}" alt="QR Code" />
+            </div>
+        </div>
     </div>
 
-    <p class="program-title">PROGRAM </p>
+    <p class="program-title">PROGRAM</p>
     <pre th:text="${code}">public class HelloWorld { ... }</pre>
 
     <p><strong>OUTPUT:</strong></p>
-    <div class="output-box" th:utext="${#strings.replace(outputText, '\n', '<br/>')}">Hello, PDF!</div>
-
-
+    <div class="output-box" th:utext="${#strings.escapeXml(outputText)?.replaceAll('\n', '<br/>')}">Hello, PDF!</div>
 </div>
 </body>
 </html>

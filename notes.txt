@@ -1,0 +1,3 @@
+To build docker file:
+    docker build -t java-runner .
+    docker run --rm -v /Dockers/java-compiler:/app java-runner

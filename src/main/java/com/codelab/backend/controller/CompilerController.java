@@ -3,15 +3,14 @@
         import com.codelab.backend.model.CodeRequest;
         import com.codelab.backend.model.CodeResponse;
         import com.codelab.backend.service.PdfService;
+        import com.codelab.backend.utility.QRCodeGenerator;
         import org.springframework.web.bind.annotation.*;
 
         import java.io.BufferedReader;
         import java.io.BufferedWriter;
         import java.io.FileWriter;
         import java.io.InputStreamReader;
-        import java.util.ArrayList;
-        import java.util.List;
-        import java.util.Map;
+        import java.util.*;
 
 
         @CrossOrigin(origins = "http://localhost:3000")
@@ -142,19 +141,25 @@
                             formattedOutput.append("Output: ").append(testCases.get(i).expected()).append("\n\n");
                         }
                         System.out.println(formattedOutput.toString());
-
-                        Map<String, Object> pdfData = Map.of(
-                                "experimentNo", "Exp-01",
-                                "title", "Add Two Numbers",
-                                "name", "Naveen",
-                                "code", userCode,
-                                "outputText", formattedOutput.toString()
-                        );
+                        String uniqueId = UUID.randomUUID().toString().toUpperCase().substring(0, 6);
+                        System.out.println(uniqueId);
 
 
+                        byte[] qrBytes = QRCodeGenerator.generateBarCodeImage(uniqueId, 150, 45);
+                        String qrBase64 = Base64.getEncoder().encodeToString(qrBytes);
+
+                        Map<String, Object> pdfData = new HashMap<>();
+                        pdfData.put("experimentNo", "01");
+                        pdfData.put("title", "ADD TWO NUMBERS");
+                        pdfData.put("name", "NAVEEN K - 8981");
+//                        pdfData.put("")
+                        pdfData.put("uniqueId", uniqueId);
+                        pdfData.put("code", userCode);
+                        pdfData.put("outputText", formattedOutput.toString());
+                        pdfData.put("qrCodeBase64", qrBase64);
 
                         byte[] pdfBytes = pdfService.generatePdf(pdfData);
-                        String pdfBase64 = java.util.Base64.getEncoder().encodeToString(pdfBytes);
+                        String pdfBase64 = Base64.getEncoder().encodeToString(pdfBytes);
 
                         return new CodeResponse(pdfBase64, "success", "All test case passed");
                         //                System.out.println(output);
