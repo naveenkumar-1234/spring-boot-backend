@@ -1,4 +1,4 @@
-package com.codelab.backend.model;
+package com.codelab.backend.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

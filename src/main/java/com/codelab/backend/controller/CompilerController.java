@@ -1,7 +1,7 @@
         package com.codelab.backend.controller;
 
-        import com.codelab.backend.model.CodeRequest;
-        import com.codelab.backend.model.CodeResponse;
+        import com.codelab.backend.request.CodeRequest;
+        import com.codelab.backend.response.CodeResponse;
         import com.codelab.backend.service.PdfService;
         import com.codelab.backend.utility.QRCodeGenerator;
         import org.springframework.web.bind.annotation.*;

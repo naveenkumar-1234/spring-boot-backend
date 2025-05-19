@@ -1,5 +1,5 @@
-public class Solution {
-    public int addTwoNumbers(int a, int b) {
-        return a + b ;
+public cla Solution {
+    public int addTwoNumbers(int a , int b){
+        return a+b;
     }
 }
