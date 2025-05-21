@@ -33,4 +33,9 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    public String getEmailFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(key) .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
 }

@@ -1,5 +1,6 @@
 package com.codelab.backend.service;
 
+import com.codelab.backend.config.JwtUtil;
 import com.codelab.backend.enums.UserRoles;
 import com.codelab.backend.exceptions.AlreadyExistException;
 import com.codelab.backend.exceptions.AuthException;
@@ -12,10 +13,16 @@ import com.codelab.backend.repository.UsersRepository;
 import com.codelab.backend.request.AddStaffReq;
 import com.codelab.backend.request.AddStudentReq;
 import com.codelab.backend.request.LoginApi;
+import com.codelab.backend.response.ApiResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -24,6 +31,7 @@ public class UserService {
     private final UsersRepository usersRepository;
     private final StudentRepository studentRepository;
     private final StaffRepository staffRepository;
+    private final JwtUtil jwtUtil;
 
     public Users registerStudent(AddStudentReq req) {
         if (usersRepository.existsByEmail(req.getEmail())) {
@@ -81,6 +89,43 @@ public class UserService {
 
         return savedUser;
     }
+
+    public ResponseEntity<ApiResponse> getSubjectByUser(HttpServletRequest request) {
+        String token = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse("Token not found", null));
+        }
+        String email = jwtUtil.getEmailFromToken(token);
+        Optional<Users> optionalUser = usersRepository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse( "User not found", null));
+        }
+
+        Users user = optionalUser.get();
+        if (user.getUserRole() == UserRoles.STAFF) {
+            Staff staff = staffRepository.findByUser(user);
+            return ResponseEntity.ok(new ApiResponse("Subjects fetched", staff.getSubjectCodes()));
+        } else if (user.getUserRole() == UserRoles.STUDENT) {
+            Student student = studentRepository.findByUser(user);
+            return ResponseEntity.ok(new ApiResponse( "Subjects fetched", student.getSubjectCodes()));
+        } else {
+            return ResponseEntity.ok(new ApiResponse("User has no subject codes", null));
+        }
+    }
+
 
     private String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
