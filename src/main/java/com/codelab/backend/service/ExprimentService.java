@@ -1,39 +1,43 @@
 package com.codelab.backend.service;
 
-import com.codelab.backend.model.ExprimentDetails;
+import com.codelab.backend.model.Experiments;
+import com.codelab.backend.repository.ExperimentRepository;
 import com.codelab.backend.response.ResponseMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ExprimentService {
-    private static List<ExprimentDetails> exprimentDetailsList = new ArrayList<>();
 
-    public List<ExprimentDetails> getAllExpriments(){
-        return exprimentDetailsList;
-    }
-    public ExprimentDetails getExprimentByNo(Integer expNo){
-        for(ExprimentDetails i : exprimentDetailsList){
-            if (i.getExprimentNo()==expNo)return i;
-        }
-        return null;
-    }
-    public ResponseMessage addExpriment(ExprimentDetails exprimentDetails){
-        if (exprimentDetails.getExprimentNo()==null){
-            return new ResponseMessage("Expriment number is required");
-        } else if (exprimentDetails.getExprimentName()==null || exprimentDetails.getExprimentName().trim().length()==0) {
-            return new ResponseMessage("Expriment Name is Required");
-        } else if (exprimentDetails.getDescription()==null || exprimentDetails.getDescription().trim().length()==0) {
-            return new ResponseMessage("Expriment Description is required");
-        } else if (exprimentDetails.getTestCasesList().size()<=0) {
-            return new ResponseMessage("Expriment Testcase is required");
-        }
-        else {
-            exprimentDetailsList.add(exprimentDetails);
+    @Autowired
+    private ExperimentRepository experimentRepository;
 
-            return new ResponseMessage("Expriment Added Successfully");
+    public List<Experiments> getAllExpriments() {
+        return experimentRepository.findAll();
+    }
+
+    public Experiments getExprimentByNo(Integer expNo) {
+        return experimentRepository.findAll()
+                .stream()
+                .filter(e -> e.getExperimentNo().equals(expNo))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public ResponseMessage addExpriment(Experiments exprimentDetails) {
+        if (exprimentDetails.getExperimentNo() == null) {
+            return new ResponseMessage("Experiment number is required");
+        } else if (exprimentDetails.getExperimentName() == null || exprimentDetails.getExperimentName().trim().isEmpty()) {
+            return new ResponseMessage("Experiment name is required");
+        } else if (exprimentDetails.getDescription() == null || exprimentDetails.getDescription().trim().isEmpty()) {
+            return new ResponseMessage("Experiment description is required");
+        } else if (exprimentDetails.getTestCasesList() == null || exprimentDetails.getTestCasesList().isEmpty()) {
+            return new ResponseMessage("Experiment test cases are required");
         }
+
+        experimentRepository.save(exprimentDetails);
+        return new ResponseMessage("Experiment added successfully");
     }
 }

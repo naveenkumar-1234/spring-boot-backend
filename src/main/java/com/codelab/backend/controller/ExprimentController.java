@@ -1,6 +1,6 @@
 package com.codelab.backend.controller;
 
-import com.codelab.backend.model.ExprimentDetails;
+import com.codelab.backend.model.Experiments;
 import com.codelab.backend.response.ResponseMessage;
 import com.codelab.backend.service.ExprimentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class ExprimentController {
     @Autowired
     private ExprimentService exprimentService;
     @GetMapping("/getAll")
-    public ResponseEntity<List<ExprimentDetails>> getAllExpriment(){
+    public ResponseEntity<List<Experiments>> getAllExpriment(){
         return ResponseEntity.ok()
 
                 .body(exprimentService.getAllExpriments());
@@ -22,7 +22,8 @@ public class ExprimentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getExprimentById(@PathVariable Integer id) {
-        ExprimentDetails exprimentDetails = exprimentService.getExprimentByNo(id);
+        Experiments exprimentDetails = exprimentService.getExprimentByNo(id);
+
         if (exprimentDetails == null) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -32,8 +33,8 @@ public class ExprimentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseMessage> addExpriment(@RequestBody ExprimentDetails exprimentDetails){
-        ResponseMessage responseMessage = exprimentService.addExpriment(exprimentDetails);
+    public ResponseEntity<ResponseMessage> addExpriment(@RequestBody Experiments expriments){
+        ResponseMessage responseMessage = exprimentService.addExpriment(expriments);
         if (responseMessage.getMessage().contains("Successfully")){
             return ResponseEntity.ok().body(responseMessage);
         }
