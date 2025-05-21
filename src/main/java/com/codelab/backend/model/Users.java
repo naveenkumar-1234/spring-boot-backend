@@ -38,8 +38,6 @@ public class Users {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
     private UserRoles userRole;
-
-    // Custom constructor without id (for creating new Users)
     public Users(String username, String email, String password, Integer spr, UserRoles userRole) {
         this.username = username;
         this.email = email;
