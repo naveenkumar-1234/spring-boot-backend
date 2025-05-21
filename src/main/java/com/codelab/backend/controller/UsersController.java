@@ -10,6 +10,7 @@ import com.codelab.backend.request.LoginApi;
 import com.codelab.backend.response.ApiResponse;
 import com.codelab.backend.service.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class UsersController {
             UserDTO userDTO = new UserDTO(userService.loginUser(req));
             String token = jwtUtil.generateToken(userDTO.getEmail(),userDTO.getUserRole());
             System.out.println(token);
-            Cookie cookie = new Cookie("jwt_token", token);
+            Cookie cookie = new Cookie("token", token);
             cookie.setHttpOnly(true);
             cookie.setSecure(true);
             cookie.setPath("/");
@@ -45,5 +46,9 @@ public class UsersController {
             return ResponseEntity.badRequest()
                     .body(new ApiResponse(e.getMessage(), null));
         }
+    }
+    @GetMapping("/subject-codes")
+    public ResponseEntity<ApiResponse> getSubjectCode(HttpServletRequest request) {
+        return userService.getSubjectByUser(request);
     }
 }
