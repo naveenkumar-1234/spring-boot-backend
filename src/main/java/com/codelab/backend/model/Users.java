@@ -2,85 +2,49 @@ package com.codelab.backend.model;
 
 import com.codelab.backend.enums.UserRoles;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+
+    @NotBlank(message = "Username is required")
+    @Column(name = "username", nullable = false)
     private String username;
-    @NonNull
+
+    @NotBlank(message = "Email is required")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @NonNull
+
+    @NotBlank(message = "Password is required")
+    @Column(name = "password", nullable = false)
     private String password;
-    @NonNull
+
+    @NotNull(message = "SPR is required")
+    @Column(name = "spr", nullable = false, unique = true)
     private Integer spr;
-    @NonNull
+
+    @NotNull(message = "User role is required")
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_role", nullable = false)
     private UserRoles userRole;
 
-    public Users() {
-    }
-
-    public Users(@NonNull String username, @NonNull String email, @NonNull String password, @NonNull Integer spr, @NonNull UserRoles userRole) {
+    // Custom constructor without id (for creating new Users)
+    public Users(String username, String email, String password, Integer spr, UserRoles userRole) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.spr = spr;
-        this.userRole = userRole;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getSpr() {
-        return spr;
-    }
-
-    public void setSpr(Integer spr) {
-        this.spr = spr;
-    }
-
-    public UserRoles getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRoles userRole) {
         this.userRole = userRole;
     }
 }
