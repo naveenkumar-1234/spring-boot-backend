@@ -16,7 +16,6 @@ public class ExprimentController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Experiments>> getAllExpriment(){
         return ResponseEntity.ok()
-
                 .body(exprimentService.getAllExpriments());
     }
 

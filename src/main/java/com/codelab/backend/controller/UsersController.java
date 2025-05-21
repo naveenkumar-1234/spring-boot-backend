@@ -26,6 +26,8 @@ public class UsersController {
     private final JwtUtil jwtUtil;
 
 
+//    @CrossOrigin(origins = )
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid  @RequestBody LoginApi req, HttpServletResponse response) {
         try {

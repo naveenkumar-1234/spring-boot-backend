@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
