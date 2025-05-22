@@ -1,8 +1,10 @@
 package com.codelab.backend.service;
 
 import com.codelab.backend.model.Experiments;
+import com.codelab.backend.model.Staff;
 import com.codelab.backend.model.TestCases;
 import com.codelab.backend.repository.ExperimentRepository;
+import com.codelab.backend.repository.StaffRepository;
 import com.codelab.backend.request.ExperimentRequest;
 import com.codelab.backend.request.TestCaseRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StaffService {
     private final ExperimentRepository experimentRepository;
+    private final StaffRepository staffRepository;
 
     public Experiments addExperiment(ExperimentRequest req){
         Experiments exp = new Experiments();
@@ -28,6 +31,9 @@ public class StaffService {
         exp.setTestCasesList(convertTestCases(req.getTestCasesList()));
 
         return experimentRepository.save(exp);
+    }
+    public List<Staff> getAllStaffs(){
+        return staffRepository.findAll();
     }
     public List<Experiments> getAllExpriments(){
         return experimentRepository.findAll();

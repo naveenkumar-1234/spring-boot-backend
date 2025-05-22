@@ -4,6 +4,7 @@ import com.codelab.backend.config.JwtUtil;
 import com.codelab.backend.enums.UserRoles;
 import com.codelab.backend.exceptions.AlreadyExistException;
 import com.codelab.backend.exceptions.AuthException;
+import com.codelab.backend.exceptions.ResourceNotFoundException;
 import com.codelab.backend.model.Staff;
 import com.codelab.backend.model.Student;
 import com.codelab.backend.model.Users;
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -141,6 +143,15 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public List<Users> getAllUsers() {
+        return usersRepository.findAll();
+    }
+
+    public Users getUserById(Long id) {
+        return usersRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
     }
 
 }
