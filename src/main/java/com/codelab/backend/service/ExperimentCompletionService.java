@@ -11,9 +11,9 @@ import com.codelab.backend.response.CompletionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,9 @@ public class ExperimentCompletionService {
     public CompletionResponseDTO markExperimentCompleted(CompletionRequestDTO request) {
         validateStudentAndExperiment(request.getStudentId(), request.getExperimentId());
 
-        if (completionRepository.existsByStudentIdAndExperimentId(
+        if (!experimentRepository.existsById(request.getExperimentId()) || !studentRepository.existsById(request.getStudentId())) {
+            throw new ResourceNotFoundException("Invalid Data Student or Experiment not found");
+        } else if (completionRepository.existsByStudentIdAndExperimentId(
                 request.getStudentId(), request.getExperimentId())) {
             throw new ConflictException("Experiment already completed by this student");
         }
@@ -43,15 +45,25 @@ public class ExperimentCompletionService {
     }
 
     public List<CompletionResponseDTO> getStudentCompletions(Long studentId) {
-        return completionRepository.findByStudentId(studentId).stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        List<StudentExperiment> completions = completionRepository.findByStudentId(studentId);
+        List<CompletionResponseDTO> result = new ArrayList<>();
+
+        for (StudentExperiment experiment : completions) {
+            result.add(mapToDTO(experiment));
+        }
+
+        return result;
     }
 
     public List<CompletionResponseDTO> getExperimentCompletions(Long experimentId) {
-        return completionRepository.findByExperimentId(experimentId).stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        List<StudentExperiment> completions = completionRepository.findByExperimentId(experimentId);
+        List<CompletionResponseDTO> result = new ArrayList<>();
+
+        for (StudentExperiment experiment : completions) {
+            result.add(mapToDTO(experiment));
+        }
+
+        return result;
     }
 
     private void validateStudentAndExperiment(Long studentId, Long experimentId) {

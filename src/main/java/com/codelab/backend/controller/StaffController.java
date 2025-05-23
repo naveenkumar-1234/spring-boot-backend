@@ -50,7 +50,7 @@ public class StaffController {
         try {
 
             Optional<Experiments> experiments=staffService.getExprementById(id);
-            if (experiments!=null)
+            if (!experiments.isEmpty())
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse("Success", experiments));
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

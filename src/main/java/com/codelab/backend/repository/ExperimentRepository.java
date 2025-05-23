@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ExperimentRepository extends JpaRepository<Experiments,Long> {
     List<Experiments> findBySubjectCode(String subjectCode);
+
+    boolean existsByExperimentName(String experimentName);
 }

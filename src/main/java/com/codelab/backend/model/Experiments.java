@@ -17,7 +17,7 @@ public class Experiments {
     @Column(nullable = false)
     private Integer experimentNo;
     @NotNull(message = "Expriment Name is Required")
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String experimentName;
 
     @NotNull(message = "Expriment description is Required")

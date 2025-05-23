@@ -96,7 +96,7 @@ public class AdminController {
             List<Users> students = studentRepository.findStudentsBySubjectCode(subjectCode);
 
             if (students.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new ApiResponse("No students found for subject code: " + subjectCode, null));
             }
 
@@ -127,7 +127,7 @@ public class AdminController {
             List<Student> students = studentRepository.findStudentsBySemester(semester);
 
             if (students.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new ApiResponse("No students found for semester: " + semester, null));
             }
 

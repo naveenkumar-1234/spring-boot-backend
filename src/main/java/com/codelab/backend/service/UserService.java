@@ -37,8 +37,14 @@ public class UserService {
 
     public Users registerStudent(AddStudentReq req) {
         if (usersRepository.existsByEmail(req.getEmail())) {
-            throw new AlreadyExistException("Student id Already Exist");
+            throw new AlreadyExistException("Student email id Already Exist");
+        } else if (usersRepository.existsBySpr(req.getSpr())) {
+            throw new AlreadyExistException("SPR Already Exist");
         }
+        else if (studentRepository.existsByRegisterNumber(req.getRegisterNumber())) {
+            throw new AlreadyExistException("RegisterNumber Already Exist");
+        }
+
 
         UserRoles roles = req.getUserRole();
 
@@ -71,6 +77,8 @@ public class UserService {
     public Users registerStaff(AddStaffReq req) {
         if (usersRepository.existsByEmail(req.getEmail())) {
             throw new AlreadyExistException("Staff id Already Exist");
+        }else if (usersRepository.existsBySpr(req.getSpr())) {
+            throw new AlreadyExistException("SPR Already Exist");
         }
 
         Users newUsers = new Users(

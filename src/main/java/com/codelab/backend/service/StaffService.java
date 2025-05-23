@@ -1,5 +1,6 @@
 package com.codelab.backend.service;
 
+import com.codelab.backend.exceptions.ConflictException;
 import com.codelab.backend.model.Experiments;
 import com.codelab.backend.model.Staff;
 import com.codelab.backend.model.TestCases;
@@ -21,6 +22,9 @@ public class StaffService {
     private final StaffRepository staffRepository;
 
     public Experiments addExperiment(ExperimentRequest req){
+        if (experimentRepository.existsByExperimentName(req.getExperimentName())) {
+            throw new ConflictException("Experiment name already exists");
+        }
         Experiments exp = new Experiments();
         exp.setExperimentNo(req.getExperimentNo());
         exp.setExperimentName(req.getExperimentName());
