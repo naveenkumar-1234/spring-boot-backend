@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExprimentService {
+public class ExperimentService {
 
     @Autowired
     private ExperimentRepository experimentRepository;
 
-    public List<Experiments> getAllExpriments() {
+    public List<Experiments> getAllExperiments() {
         return experimentRepository.findAll();
     }
 
-    public Experiments getExprimentByNo(Integer expNo) {
+    public Experiments getExperimentByNo(Integer expNo) {
         return experimentRepository.findAll()
                 .stream()
                 .filter(e -> e.getExperimentNo().equals(expNo))
@@ -26,18 +26,20 @@ public class ExprimentService {
                 .orElse(null);
     }
 
-    public ResponseMessage addExpriment(Experiments exprimentDetails) {
-        if (exprimentDetails.getExperimentNo() == null) {
+    public ResponseMessage addExperiment(Experiments experimentDetails) {
+        if (experimentDetails.getExperimentNo() == null) {
             return new ResponseMessage("Experiment number is required");
-        } else if (exprimentDetails.getExperimentName() == null || exprimentDetails.getExperimentName().trim().isEmpty()) {
+        } else if (experimentDetails.getExperimentName() == null || experimentDetails.getExperimentName().trim().isEmpty()) {
             return new ResponseMessage("Experiment name is required");
-        } else if (exprimentDetails.getDescription() == null || exprimentDetails.getDescription().trim().isEmpty()) {
+        } else if (experimentDetails.getDescription() == null || experimentDetails.getDescription().trim().isEmpty()) {
             return new ResponseMessage("Experiment description is required");
-        } else if (exprimentDetails.getTestCasesList() == null || exprimentDetails.getTestCasesList().isEmpty()) {
+        } else if (experimentDetails.getTestCasesList() == null || experimentDetails.getTestCasesList().isEmpty()) {
             return new ResponseMessage("Experiment test cases are required");
+        } else if (experimentDetails.getSubjectCode() == null || experimentDetails.getSubjectCode().trim().isEmpty()) {
+            return new ResponseMessage("Subject code is required");
         }
 
-        experimentRepository.save(exprimentDetails);
+        experimentRepository.save(experimentDetails);
         return new ResponseMessage("Experiment added successfully");
     }
 }

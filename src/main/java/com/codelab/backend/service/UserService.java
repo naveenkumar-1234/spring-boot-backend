@@ -103,6 +103,7 @@ public class UserService {
     public ResponseEntity<ApiResponse> getSubjectByUser(HttpServletRequest request) {
         String token = null;
         Cookie[] cookies = request.getCookies();
+//        System.out.println(cookies.toString());
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {

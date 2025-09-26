@@ -11,16 +11,15 @@ public class WebConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer(){
         return new WebMvcConfigurer() {
-
             @Override
             public void addCorsMappings(CorsRegistry registry){
-            registry.addMapping("/api/**")
-                    .allowedHeaders("*")
-                    .allowedOrigins("http://localhost:3000")
-                    .allowedMethods("GET","POST","PUT","DELETE")
-                    .exposedHeaders("Set-Cookie")
-                    .allowCredentials(true);
-        }
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000") // React frontend origin
+                        .allowedMethods("*")
+                        .allowedHeaders("*")
+                        .exposedHeaders("*")
+                        .allowCredentials(true); // allow cookies/session
+            }
         };
     }
 }

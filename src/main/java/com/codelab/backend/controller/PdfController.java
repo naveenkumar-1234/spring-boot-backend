@@ -36,7 +36,6 @@ public class PdfController {
     @GetMapping("/getpdf")
     public ResponseEntity<byte[]> getPdf() throws Exception {
 
-
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.pdf")
                 .contentType(MediaType.APPLICATION_PDF)

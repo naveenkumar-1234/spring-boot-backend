@@ -1,3 +1,42 @@
 To build docker file:
     docker build -t java-runner .
     docker run --rm -v /Dockers/java-compiler:/app java-runner
+
+ Security Config
+ @Bean
+     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+         http
+                 .cors(Customizer.withDefaults())
+                 .csrf(csrf -> csrf.disable())
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                 .authorizeHttpRequests(auth -> auth
+                         .requestMatchers("/api/**").permitAll()
+                         .anyRequest().authenticated()
+                 )
+                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+         return http.build();
+     }
+
+     @Bean
+     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+         return config.getAuthenticationManager();
+     }
+
+
+
+ @Bean
+    public WebMvcConfigurer corsConfigurer(){
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addCorsMappings(CorsRegistry registry){
+            registry.addMapping("/api/**")
+                    .allowedHeaders("*")
+                    .allowedOrigins("http://localhost:3000")
+                    .allowedMethods("GET","POST","PUT","DELETE", "OPTIONS")
+                    .exposedHeaders("Set-Cookie")
+                    .allowCredentials(true);
+        }
+        };
+    }

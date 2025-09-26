@@ -29,7 +29,7 @@ public class StaffService {
         exp.setExperimentNo(req.getExperimentNo());
         exp.setExperimentName(req.getExperimentName());
         exp.setDescription(req.getDescription());
-        exp.setConstains(req.getConstains());
+        exp.setConstraints(req.getConstains());
         exp.setSubjectCode(req.getSubjectCode());
         exp.setCompletedDate(req.getCompletedDate());
         exp.setTestCasesList(convertTestCases(req.getTestCasesList()));

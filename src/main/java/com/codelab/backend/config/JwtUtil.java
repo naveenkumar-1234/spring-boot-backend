@@ -11,7 +11,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String secret = "this_is_a_very_secure_key_for_demo_purposes_only_123";
+    private final String secret = "Launch CopyQ from the application menu.\n" +
+            "Set a shortcut:";
     private final Key key = Keys.hmacShaKeyFor(secret.getBytes());
     private final long expirationMillis = 1000 * 60 * 60 * 24;
 

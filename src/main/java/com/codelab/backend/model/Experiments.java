@@ -10,27 +10,32 @@ import java.util.List;
 @Entity
 @Data
 public class Experiments {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull(message = "Emperiment Number   is Required")
+
+    @NotNull(message = "Experiment number is required")
     @Column(nullable = false)
     private Integer experimentNo;
-    @NotNull(message = "Expriment Name is Required")
-    @Column(nullable = false,unique = true)
+
+    @NotNull(message = "Experiment name is required")
+    @Column(nullable = false, unique = true)
     private String experimentName;
 
-    @NotNull(message = "Expriment description is Required")
+    @NotNull(message = "Experiment description is required")
     @Column(nullable = false)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "experiment_id")
+    @JoinColumn(name = "experiment_id") // This joins TestCases to this experiment
     private List<TestCases> testCasesList;
 
-    private String constains;
-    @NotNull(message = "Subject Code is Required")
+    private String constraints;
+
+    @NotNull(message = "Subject code is required")
     @Column(nullable = false)
     private String subjectCode;
+
     private Date completedDate;
 }

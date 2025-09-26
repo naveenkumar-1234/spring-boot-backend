@@ -80,7 +80,6 @@ public class UsersController {
         try {
             Users users = userService.getUserById(id);
 
-
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse("Success", users));
 
